@@ -10,6 +10,10 @@ Control {
     property alias columns: grid.columns
     property alias rowSpacing: grid.rowSpacing
     property alias columnSpacing: grid.columnSpacing
+    // This is the width of the smallest tile (the tiles columnSpan equals 1)
+    property real atomicWidth: 50
+    // This is the height of the smallest tile (the tiles rowSpan equals 1)
+    property real atomicHeight: 50
 
     property int count: {
 
@@ -19,6 +23,19 @@ Control {
         }
         return count
     }
+
+    onAtomicHeightChanged: {
+        grid.atomicHeight = control.atomicHeight
+    }
+
+    onAtomicWidthChanged: {
+        grid.atomicWidth = control.atomicWidth
+    }
+
+    implicitWidth: control.leftPadding + control.rightPadding + control.atomicWidth
+                   * control.columns + (control.columns - 1) * control.columnSpacing
+    implicitHeight: control.topPadding + control.bottomPadding + control.atomicHeight
+                    * control.rows + (control.rows - 1) * control.rowSpacing
 
     focusPolicy: Qt.StrongFocus
     focus: true
@@ -67,20 +84,22 @@ Control {
 
         id: grid
 
-        readonly property real atomicWidth: 48
-        readonly property real atomicHeight: 48
+        property real atomicWidth: 50
+        property real atomicHeight: 50
 
         readonly property int maxIndex: toIndex(rows - 1, columns - 1)
 
+        horizontalItemAlignment: Grid.AlignHCenter
+        verticalItemAlignment: Grid.AlignVCenter
+        padding: 0
         columnSpacing: 0
         rowSpacing: 0
         rows: 1
         columns: 1
 
-        add: control.add
+        //add: control.add
 
-        move: control.move
-
+        //move: control.move
         function tileHolderAtPosition(x, y) {
 
             return grid.childAt(x, y)
@@ -143,16 +162,24 @@ Control {
                         visualTile.visible = true
                         visualTile.reparent(tileHolderTarget)
 
-                        let rowSpan = Math.min(
-                                Math.max(Math.round(visualTile.rowSpan), 1),
-                                grid.rows)
-                        let columnSpan = Math.min(
-                                Math.max(Math.round(visualTile.columnSpan), 1),
-                                grid.columns)
-                        visualTile.width = columnSpan * grid.atomicWidth
-                                + (columnSpan - 1) * grid.columnSpacing
-                        visualTile.height = rowSpan * grid.atomicHeight
-                                + (rowSpan - 1) * grid.rowSpacing
+                        visualTile.width = Qt.binding(function () {
+
+                            let columnSpan = Math.min(
+                                    Math.max(Math.round(this.columnSpan), 1),
+                                    grid.columns)
+
+                            return columnSpan * grid.atomicWidth
+                                    + (columnSpan - 1) * grid.columnSpacing
+                        })
+
+                        visualTile.height = Qt.binding(function () {
+
+                            let rowSpan = Math.min(Math.max(Math.round(
+                                                                this.rowSpan),
+                                                            1), grid.rows)
+
+                            return rowSpan * grid.atomicHeight + (rowSpan - 1) * grid.rowSpacing
+                        })
                     }
                 }
 
@@ -164,17 +191,6 @@ Control {
                     console.assert(tileHolderTarget, "Missing tileHolder")
                     if (visualTile && tileHolderTarget) {
                         visualTile.reparent(tileHolderTarget)
-
-                        let rowSpan = Math.min(
-                                Math.max(Math.round(visualTile.rowSpan), 1),
-                                grid.rows)
-                        let columnSpan = Math.min(
-                                Math.max(Math.round(visualTile.columnSpan), 1),
-                                grid.columns)
-                        visualTile.width = columnSpan * grid.atomicWidth
-                                + (columnSpan - 1) * grid.columnSpacing
-                        visualTile.height = rowSpan * grid.atomicHeight
-                                + (rowSpan - 1) * grid.rowSpacing
                     }
                 }
 
@@ -378,6 +394,8 @@ Control {
                     anchors.right: parent.right
                 }
 
+
+                /*
                 Behavior on implicitWidth {
                     enabled: true
                     NumberAnimation {
@@ -392,8 +410,7 @@ Control {
                         duration: 150
                         easing.type: Easing.InCubic
                     }
-                }
-
+                }*/
                 Behavior on scale {
                     enabled: true
                     NumberAnimation {
