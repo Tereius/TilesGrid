@@ -1,6 +1,6 @@
-import QtQuick 2.15
+import QtQuick 2.12
 import QtQuick.Layouts 1.12
-import QtQuick.Controls 2.5
+import QtQuick.Controls 2.12
 import QtGraphicalEffects 1.12
 import TilesGrid 1.0
 
@@ -11,7 +11,8 @@ Item {
 
     Rectangle {
         color: Qt.lighter("#3D5A80", 1.5)
-        anchors.fill: parent
+        width: 99999
+        height: 99999
     }
 
     ColumnLayout {
@@ -19,12 +20,14 @@ Item {
         id: layout
         objectName: "test"
 
-        TileLayout {
+        TilesGrid {
 
             id: tyleLayout
             focus: true
-            rows: 10
-            columns: 10
+            rows: 6
+            columns: 6
+            rowSpacing: 4
+            columnSpacing: 4
 
             highlightDelegate: Item {
 
@@ -72,7 +75,7 @@ Item {
             FancyTile {
 
                 text: "1 x 1"
-                color: "#98C1D9"
+                color: "#EE6C4D"
             }
 
             FancyTile {
@@ -86,7 +89,7 @@ Item {
 
                 columnSpan: 2
                 text: "1 x 2"
-                color: "#E0FBFC"
+                color: "#98C1D9"
             }
 
             FancyTile {

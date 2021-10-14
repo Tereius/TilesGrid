@@ -127,8 +127,8 @@ Control {
                 d.visualTiles = {}
             }
 
-            property TileLayoutLogic model: TileLayoutLogic {
-                data: TileLayoutData {
+            property TilesGridLogic model: TilesGridLogic {
+                data: TilesGridData {
                     rows: grid.rows
                     columns: grid.columns
                 }

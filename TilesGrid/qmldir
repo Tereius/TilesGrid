@@ -1,5 +1,5 @@
 module TilesGrid
 Tile 1.0 Tile.qml
-TileLayout 1.0 TileLayout.qml
-TileLayoutData 1.0 TileLayoutData.qml
-TileLayoutLogic 1.0 TileLayoutLogic.qml
+TilesGrid 1.0 TilesGrid.qml
+TilesGridData 1.0 TilesGridData.qml
+TilesGridLogic 1.0 TilesGridLogic.qml

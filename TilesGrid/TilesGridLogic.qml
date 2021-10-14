@@ -1,4 +1,4 @@
-import QtQuick 2.0
+import QtQuick 2.12
 
 QtObject {
 
@@ -8,7 +8,7 @@ QtObject {
     signal tileRemoved(var tile)
     signal collisionDetected(var model, var tile, var index, var intersections)
 
-    property TileLayoutData data: TileLayoutData {}
+    property TilesGridData data: TilesGridData {}
 
     property alias rows: logic.data.rows
     property alias columns: logic.data.columns
@@ -539,7 +539,7 @@ QtObject {
 
     readonly property QtObject _private: QtObject {
 
-        property TileLayoutData data: logic.data
+        property TilesGridData data: logic.data
 
         property int proposeMoveUndoStackIndex: 0
         property var proposeMoveTile: null
@@ -669,7 +669,7 @@ QtObject {
                                                   "tiles": tilesCopy
                                               })
             if (data == null) {
-                console.log("Error copying tile layout data")
+                console.error("Error copying tile layout data")
             }
 
             return data

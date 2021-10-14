@@ -1,6 +1,6 @@
-import QtQuick 2.0
+import QtQuick 2.12
 
-Item {
+Rectangle {
 
     id: tile
 
@@ -15,17 +15,20 @@ Item {
     property int rowSpan: 1
     property int columnSpan: 1
 
-    z: dragActive ? 1 : 0
-    implicitHeight: 48 * rowSpan
-    implicitWidth: 48 * columnSpan
+    color: "white"
+    border.width: 3
+    border.color: "grey"
+    implicitHeight: 48 * tile.rowSpan
+    implicitWidth: 48 * tile.columnSpan
+    z: tile.dragActive ? 1 : 0
 
-    objectName: "item-(" + row + ", " + column + ")"
+    objectName: "item-(" + tile.row + ", " + tile.column + ")"
 
     Drag.keys: ["tile"]
     Drag.active: mouseArea.drag.active
     Drag.dragType: Drag.Internal
-    Drag.hotSpot.x: width / columnSpan / 2
-    Drag.hotSpot.y: height / rowSpan / 2
+    Drag.hotSpot.x: tile.width / tile.columnSpan / 2
+    Drag.hotSpot.y: tile.height / tile.rowSpan / 2
 
     function reparent(newParent) {
         if (newParent && newParent !== tile.parent) {
@@ -58,15 +61,8 @@ Item {
         running: false
     }
 
-    Text {
-        anchors.centerIn: parent
-        text: tile.row + "," + tile.column + " " + tile.index
-        color: "white"
-    }
-
     MouseArea {
         id: mouseArea
-
         anchors.fill: tile
         drag.target: tile
         drag.filterChildren: true

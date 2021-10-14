@@ -1,0 +1,11 @@
+# Created by https://www.toptal.com/developers/gitignore/api/qml
+# Edit at https://www.toptal.com/developers/gitignore?templates=qml
+
+### QML ###
+# Cached binary representations of QML and JS files
+*.qmlc
+*.jsc
+
+*.qmlproject.user
+
+# End of https://www.toptal.com/developers/gitignore/api/qml
